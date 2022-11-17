@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import { getDatabase, ref, push } from 'firebase/database';
 import { INPUT_LABELS } from '../utils/constants';
 import '../styles.css';
 
-const FormState = {
+const InitialState = {
   title: '',
   description: '',
   date: '',
@@ -10,7 +11,7 @@ const FormState = {
 };
 
 const Form = () => {
-  const [todo, setTodo] = useState(FormState);
+  const [todo, setTodo] = useState(InitialState);
 
   const changeTodoHandler = (event, key) => {
     const { value } = event.target;
@@ -21,10 +22,22 @@ const Form = () => {
     });
   };
 
+  const writeTodos = (title, description, date, file) => {
+    const db = getDatabase();
+
+    push(ref(db, 'todos/'), {
+      title,
+      description,
+      date,
+      file,
+    });
+  };
+
   const onSubmit = (event) => {
     event.preventDefault();
 
-    setTodo(FormState);
+    writeTodos(todo.title, todo.description, todo.date, todo.file);
+    setTodo(InitialState);
   };
 
   return (
