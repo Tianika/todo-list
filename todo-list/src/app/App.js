@@ -1,9 +1,13 @@
+import Form from '../components/Form';
 import '../styles.css';
 
 function App() {
   return (
     <div className='app'>
-      <h1>Список дел</h1>
+      <div className='wrapper'>
+        <h1 className='header'>Список дел</h1>
+        <Form />
+      </div>
     </div>
   );
 }
