@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { INPUT_LABELS } from '../utils/constants';
 import '../styles.css';
 
@@ -6,12 +6,13 @@ const InitialState = {
   title: '',
   description: '',
   date: '',
-  file: '',
+  fileName: '',
 };
 const isComplete = false;
 
-const Form = ({ addTodo }) => {
+const Form = ({ addTodo, uploadFile }) => {
   const [todo, setTodo] = useState(InitialState);
+  const ref = useRef();
 
   const changeTodoHandler = (event, key) => {
     const { value } = event.target;
@@ -23,23 +24,28 @@ const Form = ({ addTodo }) => {
   };
 
   const addFile = (event) => {
-    console.log(event.target.files[0]);
-    const formData = new FormData();
-    formData.append('file', event.target.files[0]);
+    const fileData = event.target.files[0];
 
     setTodo({
       ...todo,
-      file: formData,
+      fileName: fileData.name,
     });
   };
 
   const onSubmit = (event) => {
     event.preventDefault();
+    const { title, description, date, fileName } = todo;
 
-    const { title, description, date, file } = todo;
+    console.log('ref ', ref.current.files[0]);
 
-    addTodo(title, description, date, file, isComplete);
-    setTodo(InitialState);
+    uploadFile(todo.fileName, ref.current.files[0]).then((snapshot) => {
+      console.log('Uploaded a blob or file! ', snapshot);
+
+      const url = snapshot.metadata.fullPath;
+
+      addTodo(title, description, date, fileName, isComplete, url);
+      setTodo(InitialState);
+    });
   };
 
   return (
@@ -72,8 +78,8 @@ const Form = ({ addTodo }) => {
         />
       </label>
       <label className='add-file' htmlFor={INPUT_LABELS.file}>
-        Прикрепить файл
-        <input type='file' id={INPUT_LABELS.file} onChange={addFile} />
+        {todo.fileName || 'Прикрепить файл'}
+        <input type='file' id={INPUT_LABELS.file} onChange={addFile} ref={ref} />
       </label>
       <button className='submit-button' type='submit' disabled={!(todo.title && todo.description)}>
         Добавить в список

@@ -1,37 +1,30 @@
 import Todo from './Todo';
 
-const Todos = ({ todos, isLoading, error, removeTodo }) => {
-  const displayTodos = () => {
-    if (isLoading) {
-      return <div>Загрузка...</div>;
-    }
+const Todos = ({ todos, removeTodo, downloadFile }) => {
+  if (!todos) {
+    return <div>Здесь пока ничего нет.</div>;
+  }
 
-    if (!todos) {
-      return <div>Здесь пока ничего нет.</div>;
-    }
+  return (
+    <div>
+      {todos &&
+        Object.keys(todos).map((id) => {
+          const { title, description, date, fileName, url } = todos[id];
 
-    if (error) {
-      return <div>Ошибка получения данных: {error}</div>;
-    }
-
-    return Object.keys(todos).map((id) => {
-      const { title, description, date, file } = todos[id];
-      console.log(file);
-
-      return (
-        <Todo
-          key={id}
-          title={title}
-          description={description}
-          date={date}
-          file={file}
-          removeTodo={() => removeTodo(id)}
-        />
-      );
-    });
-  };
-
-  return <div>{displayTodos()}</div>;
+          return (
+            <Todo
+              key={id}
+              title={title}
+              description={description}
+              date={date}
+              fileName={fileName}
+              removeTodo={() => removeTodo(id, url)}
+              downloadFile={() => downloadFile(url)}
+            />
+          );
+        })}
+    </div>
+  );
 };
 
 export default Todos;
