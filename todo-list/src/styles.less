@@ -63,3 +63,30 @@ body {
     }
   }
 }
+
+.todo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  margin: 10px 0;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: @bg-base;
+
+  .todo-title {
+    margin-bottom: 5px;
+    font-size: 22px;
+    font-weight: bold;
+  }
+}
+
+.todo-buttons {
+  button {
+    margin-left: 5px;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: @bg-app;
+    font-size: 12px;
+  }
+}

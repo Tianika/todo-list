@@ -30,6 +30,8 @@ const Form = () => {
       description,
       date,
       file,
+    }).then(() => {
+      console.log('успешно');
     });
   };
 
