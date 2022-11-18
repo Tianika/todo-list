@@ -4,3 +4,5 @@ export const INPUT_LABELS = {
   date: 'date',
   file: 'file',
 };
+
+export const DATABASE_NAME = 'todos';

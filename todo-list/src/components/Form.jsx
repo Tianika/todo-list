@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { getDatabase, ref, push } from 'firebase/database';
 import { INPUT_LABELS } from '../utils/constants';
 import '../styles.css';
 
@@ -9,8 +8,9 @@ const InitialState = {
   date: '',
   file: '',
 };
+const isComplete = false;
 
-const Form = () => {
+const Form = ({ addTodo }) => {
   const [todo, setTodo] = useState(InitialState);
 
   const changeTodoHandler = (event, key) => {
@@ -22,23 +22,23 @@ const Form = () => {
     });
   };
 
-  const writeTodos = (title, description, date, file) => {
-    const db = getDatabase();
+  const addFile = (event) => {
+    console.log(event.target.files[0]);
+    const formData = new FormData();
+    formData.append('file', event.target.files[0]);
 
-    push(ref(db, 'todos/'), {
-      title,
-      description,
-      date,
-      file,
-    }).then(() => {
-      console.log('успешно');
+    setTodo({
+      ...todo,
+      file: formData,
     });
   };
 
   const onSubmit = (event) => {
     event.preventDefault();
 
-    writeTodos(todo.title, todo.description, todo.date, todo.file);
+    const { title, description, date, file } = todo;
+
+    addTodo(title, description, date, file, isComplete);
     setTodo(InitialState);
   };
 
@@ -48,7 +48,7 @@ const Form = () => {
         Заголовок
         <input
           type='text'
-          name={INPUT_LABELS.title}
+          id={INPUT_LABELS.title}
           value={todo.title}
           onChange={(event) => changeTodoHandler(event, INPUT_LABELS.title)}
         />
@@ -57,7 +57,7 @@ const Form = () => {
         Описание
         <input
           type='text'
-          name={INPUT_LABELS.description}
+          id={INPUT_LABELS.description}
           value={todo.description}
           onChange={(event) => changeTodoHandler(event, INPUT_LABELS.description)}
         />
@@ -66,22 +66,17 @@ const Form = () => {
         Выполнить до
         <input
           type='date'
-          name={INPUT_LABELS.date}
+          id={INPUT_LABELS.date}
           value={todo.date}
           onChange={(event) => changeTodoHandler(event, INPUT_LABELS.date)}
         />
       </label>
-      <label htmlFor={INPUT_LABELS.file}>
-        Файл
-        <input
-          type='file'
-          name={INPUT_LABELS.file}
-          value={todo.file}
-          onChange={(event) => changeTodoHandler(event, INPUT_LABELS.file)}
-        />
+      <label className='add-file' htmlFor={INPUT_LABELS.file}>
+        Прикрепить файл
+        <input type='file' id={INPUT_LABELS.file} onChange={addFile} />
       </label>
       <button className='submit-button' type='submit' disabled={!(todo.title && todo.description)}>
-        Добавить
+        Добавить в список
       </button>
     </form>
   );

@@ -1,45 +1,37 @@
-import { useEffect, useState } from 'react';
-import { getDatabase, ref, child, get } from 'firebase/database';
 import Todo from './Todo';
 
-const Todos = () => {
-  const [todos, setTodos] = useState(null);
-  const [error, setError] = useState(null);
+const Todos = ({ todos, isLoading, error, removeTodo }) => {
+  const displayTodos = () => {
+    if (isLoading) {
+      return <div>Загрузка...</div>;
+    }
 
-  const dbRef = ref(getDatabase());
+    if (!todos) {
+      return <div>Здесь пока ничего нет.</div>;
+    }
 
-  useEffect(() => {
-    get(child(dbRef, `todos/`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          setTodos(snapshot.val());
-        }
-      })
-      .catch((error) => {
-        setError(error);
-      });
-  }, [dbRef]);
+    if (error) {
+      return <div>Ошибка получения данных: {error}</div>;
+    }
 
-  if (!todos) {
-    return <div>Здесь пока ничего нет</div>;
-  }
+    return Object.keys(todos).map((id) => {
+      const { title, description, date, file } = todos[id];
+      console.log(file);
 
-  if (error) {
-    return <div>Ошибка получения данных: {error}</div>;
-  }
+      return (
+        <Todo
+          key={id}
+          title={title}
+          description={description}
+          date={date}
+          file={file}
+          removeTodo={() => removeTodo(id)}
+        />
+      );
+    });
+  };
 
-  console.log(todos);
-
-  return (
-    <div>
-      {todos &&
-        Object.keys(todos).map((id) => {
-          const { title, description, date, file } = todos[id];
-
-          return <Todo key={id} title={title} description={description} date={date} file={file} />;
-        })}
-    </div>
-  );
+  return <div>{displayTodos()}</div>;
 };
 
 export default Todos;

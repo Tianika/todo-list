@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import '../styles.css';
 
-const Todo = ({ title, description, date, file }) => {
+const Todo = ({ title, description, date, file, removeTodo }) => {
   return (
     <div className='todo'>
       <div className='todo-info'>
@@ -13,7 +13,7 @@ const Todo = ({ title, description, date, file }) => {
       <div className='todo-buttons'>
         <input type='checkbox' title='Отметить выполнение' />
         <button>Редактировать</button>
-        <button>Удалить</button>
+        <button onClick={removeTodo}>Удалить</button>
       </div>
     </div>
   );
