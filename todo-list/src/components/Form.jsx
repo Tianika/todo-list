@@ -12,7 +12,7 @@ const isComplete = false;
 
 const Form = ({ addTodo, uploadFile }) => {
   const [todo, setTodo] = useState(InitialState);
-  const ref = useRef();
+  let ref = useRef();
 
   const changeTodoHandler = (event, key) => {
     const { value } = event.target;
@@ -35,17 +35,17 @@ const Form = ({ addTodo, uploadFile }) => {
   const onSubmit = (event) => {
     event.preventDefault();
     const { title, description, date, fileName } = todo;
+    let url = '';
 
-    console.log('ref ', ref.current.files[0]);
+    if (ref.current.files[0]) {
+      uploadFile(todo.fileName, ref.current.files[0]).then((snapshot) => {
+        url = snapshot.metadata.fullPath;
+        ref.current.value = null;
+      });
+    }
 
-    uploadFile(todo.fileName, ref.current.files[0]).then((snapshot) => {
-      console.log('Uploaded a blob or file! ', snapshot);
-
-      const url = snapshot.metadata.fullPath;
-
-      addTodo(title, description, date, fileName, isComplete, url);
-      setTodo(InitialState);
-    });
+    addTodo({ title, description, date, fileName, isComplete, url });
+    setTodo(InitialState);
   };
 
   return (

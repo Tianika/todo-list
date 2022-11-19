@@ -1,4 +1,5 @@
 @font: #232323;
+@base-color: rgb(62, 255, 159);
 @bg-app: rgb(194, 255, 224);
 @bg-base: #ffffff;
 
@@ -29,6 +30,7 @@ body {
 
 .loader {
   position: fixed;
+  z-index: 10;
   top: 0;
   left: 0;
   display: flex;
@@ -72,7 +74,7 @@ body {
     margin: 0 10px;
     border: none;
     border-radius: 15px;
-    background-color: @bg-app;
+    background-color: @base-color;
 
     &:disabled {
       cursor: default;
@@ -123,13 +125,12 @@ body {
     margin-left: 5px;
     padding: 5px;
     border-radius: 10px;
-    background-color: @bg-app;
+    background-color: @base-color;
     font-size: 12px;
   }
 
   .complete-button {
     position: absolute;
-    z-index: -1;
     opacity: 0;
     width: 0;
     height: 0;
@@ -143,7 +144,7 @@ body {
     height: 30px;
     border-radius: 5px;
     border: 2px solid @font;
-    background-color: @bg-app;
+    background-color: @base-color;
 
     &::after {
       content: '';
@@ -169,14 +170,14 @@ body {
 }
 
 .add-file {
+  position: relative;
   padding: 10px 15px;
   border-radius: 15px;
-  background-color: @bg-app;
+  background-color: @base-color;
   font-size: 12px;
 
   input {
     position: absolute;
-    z-index: -1;
     opacity: 0;
   }
 }
@@ -184,7 +185,7 @@ body {
 .todo-file {
   padding: 5px 10px;
   border-radius: 10px;
-  background-color: @bg-app;
+  background-color: @base-color;
   font-size: 12px;
   cursor: pointer;
 }

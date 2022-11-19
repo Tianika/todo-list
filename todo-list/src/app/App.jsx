@@ -29,10 +29,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Realtime Database, Cloud Storage and get a reference to the service
-// getDatabase(app);
-// getStorage(app);
-
 function App() {
   const [todos, setTodos] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -58,17 +54,19 @@ function App() {
       });
   };
 
-  const addTodo = (title, description, date, fileName, isComplete, url) => {
+  const addTodo = ({ title, description, date, fileName, isComplete, url }) => {
     setIsLoading(true);
 
-    push(databaseRef(db, `${DATABASE_NAME}/`), {
+    const newTodo = {
       title,
       description,
       date,
       fileName,
-      url,
+      url: url || '',
       isComplete,
-    })
+    };
+
+    push(databaseRef(db, `${DATABASE_NAME}/`), newTodo)
       .then(() => {
         getTodos();
       })
@@ -81,11 +79,11 @@ function App() {
 
   const removeTodo = ({ id, url }) => {
     setIsLoading(true);
+    const promises = [remove(databaseRef(db, `${DATABASE_NAME}/` + id))];
 
-    const promises = [
-      remove(databaseRef(db, `${DATABASE_NAME}/` + id)),
-      deleteObject(storageRef(storage, url)),
-    ];
+    if (url) {
+      promises.push(deleteObject(storageRef(storage, url)));
+    }
 
     Promise.all(promises)
       .then(() => {

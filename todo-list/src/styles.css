@@ -20,6 +20,7 @@ body {
 }
 .loader {
   position: fixed;
+  z-index: 10;
   top: 0;
   left: 0;
   display: flex;
@@ -60,7 +61,7 @@ body {
   margin: 0 10px;
   border: none;
   border-radius: 15px;
-  background-color: #c2ffe0;
+  background-color: #3eff9f;
 }
 .form .submit-button:disabled {
   cursor: default;
@@ -101,12 +102,11 @@ body {
   margin-left: 5px;
   padding: 5px;
   border-radius: 10px;
-  background-color: #c2ffe0;
+  background-color: #3eff9f;
   font-size: 12px;
 }
 .todo-buttons .complete-button {
   position: absolute;
-  z-index: -1;
   opacity: 0;
   width: 0;
   height: 0;
@@ -119,7 +119,7 @@ body {
   height: 30px;
   border-radius: 5px;
   border: 2px solid #232323;
-  background-color: #c2ffe0;
+  background-color: #3eff9f;
 }
 .todo-buttons .complete-button + label::after {
   content: '';
@@ -139,20 +139,20 @@ body {
   width: 22px;
 }
 .add-file {
+  position: relative;
   padding: 10px 15px;
   border-radius: 15px;
-  background-color: #c2ffe0;
+  background-color: #3eff9f;
   font-size: 12px;
 }
 .add-file input {
   position: absolute;
-  z-index: -1;
   opacity: 0;
 }
 .todo-file {
   padding: 5px 10px;
   border-radius: 10px;
-  background-color: #c2ffe0;
+  background-color: #3eff9f;
   font-size: 12px;
   cursor: pointer;
 }
