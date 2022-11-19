@@ -1,7 +1,25 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import dayjs from 'dayjs';
 import '../styles.css';
 import EditTodo from '../components/EditTodo';
+import { BUTTON_TEXTS } from '../utils/locales';
+
+/**
+ * Компонент для отображения задачи
+ * @component
+ * @param { Object } props
+ * @param { string } props.id
+ * @param { string } props.title
+ * @param { string } props.description
+ * @param { string } props.date
+ * @param { string } props.fileName
+ * @param { string } props.isComplete
+ * @param { string } props.url
+ * @param { function } props.removeTodo
+ * @param { function } props.downloadFile
+ * @param { function } props.updateTodo
+ * @returns { JSX.Element }
+ */
 
 const Todo = ({
   id,
@@ -51,10 +69,10 @@ const Todo = ({
           />
           <label htmlFor={checkboxId} />
           <button className='edit-button' onClick={() => setIsEdit(true)}>
-            Редактировать
+            {BUTTON_TEXTS.edit}
           </button>
           <button className='remove-button' onClick={() => removeTodo({ id, url })}>
-            Удалить
+            {BUTTON_TEXTS.delete}
           </button>
         </div>
       </div>

@@ -1,4 +1,25 @@
+//@ts-check
+
+import React from 'react';
 import Todo from './Todo';
+
+/**
+ * Компонент для отображения todos
+ * @component
+ * @param { Object } props
+ * @param { ( Object[] | null ) } props.todos
+ * @param { Object } props.todos
+ * @param { string } props.todos[].title
+ * @param { string } props.todos[].description
+ * @param { string } props.todos[].date
+ * @param { string } props.todos[].fileName
+ * @param { string } props.todos[].isComplete
+ * @param { string } props.todos[].url
+ * @param { function } props.removeTodo
+ * @param { function } props.downloadFile
+ * @param { function } props.updateTodo
+ * @returns { JSX.Element }
+ */
 
 const Todos = ({ todos, removeTodo, downloadFile, updateTodo }) => {
   if (!todos) {
