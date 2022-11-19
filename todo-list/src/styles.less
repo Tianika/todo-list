@@ -27,6 +27,20 @@ body {
   margin-bottom: 15px;
 }
 
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(24, 24, 24);
+  color: #ffffff;
+  opacity: 0.5;
+}
+
 .form {
   display: flex;
   flex-wrap: wrap;
@@ -72,13 +86,18 @@ body {
   align-items: center;
   text-align: left;
   margin-top: 15px;
-  padding: 20px;
+  padding: 10px 20px;
   border-radius: 15px;
   background-color: @bg-base;
 
   &.complete {
-    color: @bg-app;
+    color: #3f3f3f;
     background-color: rgb(211, 211, 211);
+  }
+
+  &.overdue {
+    outline: 1px solid red;
+    background-color: rgb(252, 206, 206);
   }
 
   .todo-title {
@@ -88,7 +107,16 @@ body {
   }
 }
 
+.todo-info {
+  div {
+    margin-bottom: 5px;
+  }
+}
+
 .todo-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-shrink: 0;
 
   button {
@@ -97,6 +125,46 @@ body {
     border-radius: 10px;
     background-color: @bg-app;
     font-size: 12px;
+  }
+
+  .complete-button {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .complete-button + label {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    border: 2px solid @font;
+    background-color: @bg-app;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 10px;
+      bottom: 12px;
+      opacity: 0;
+      border-left: 2px solid @font;
+      border-bottom: 2px solid @font;
+      transform: rotate(-45deg);
+    }
+  }
+
+  .complete-button:checked + label {
+    &::after {
+      left: 3px;
+      bottom: 12px;
+      opacity: 1;
+      height: 10px;
+      width: 22px;
+    }
   }
 }
 
@@ -107,12 +175,16 @@ body {
   font-size: 12px;
 
   input {
+    position: absolute;
+    z-index: -1;
     opacity: 0;
-    width: 0;
-    height: 0;
-    overflow: hidden;
-    line-height: 0;
-    padding: 0;
-    margin: 0;
   }
+}
+
+.todo-file {
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: @bg-app;
+  font-size: 12px;
+  cursor: pointer;
 }

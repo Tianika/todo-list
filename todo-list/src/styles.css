@@ -18,6 +18,19 @@ body {
 .header {
   margin-bottom: 15px;
 }
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #181818;
+  color: #ffffff;
+  opacity: 0.5;
+}
 .form {
   display: flex;
   flex-wrap: wrap;
@@ -58,20 +71,30 @@ body {
   align-items: center;
   text-align: left;
   margin-top: 15px;
-  padding: 20px;
+  padding: 10px 20px;
   border-radius: 15px;
   background-color: #ffffff;
 }
 .todo.complete {
-  color: #c2ffe0;
+  color: #3f3f3f;
   background-color: #d3d3d3;
+}
+.todo.overdue {
+  outline: 1px solid red;
+  background-color: #fccece;
 }
 .todo .todo-title {
   margin-bottom: 5px;
   font-size: 22px;
   font-weight: bold;
 }
+.todo-info div {
+  margin-bottom: 5px;
+}
 .todo-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-shrink: 0;
 }
 .todo-buttons button {
@@ -81,6 +104,40 @@ body {
   background-color: #c2ffe0;
   font-size: 12px;
 }
+.todo-buttons .complete-button {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.todo-buttons .complete-button + label {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  border: 2px solid #232323;
+  background-color: #c2ffe0;
+}
+.todo-buttons .complete-button + label::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  bottom: 12px;
+  opacity: 0;
+  border-left: 2px solid #232323;
+  border-bottom: 2px solid #232323;
+  transform: rotate(-45deg);
+}
+.todo-buttons .complete-button:checked + label::after {
+  left: 3px;
+  bottom: 12px;
+  opacity: 1;
+  height: 10px;
+  width: 22px;
+}
 .add-file {
   padding: 10px 15px;
   border-radius: 15px;
@@ -88,11 +145,14 @@ body {
   font-size: 12px;
 }
 .add-file input {
+  position: absolute;
+  z-index: -1;
   opacity: 0;
-  width: 0;
-  height: 0;
-  overflow: hidden;
-  line-height: 0;
-  padding: 0;
-  margin: 0;
+}
+.todo-file {
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: #c2ffe0;
+  font-size: 12px;
+  cursor: pointer;
 }

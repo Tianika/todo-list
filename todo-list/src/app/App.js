@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react';
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref as databaseRef, push, child, get, remove } from 'firebase/database';
+import {
+  getDatabase,
+  ref as databaseRef,
+  push,
+  child,
+  get,
+  remove,
+  update,
+} from 'firebase/database';
 import {
   getStorage,
   ref as storageRef,
@@ -51,6 +59,8 @@ function App() {
   };
 
   const addTodo = (title, description, date, fileName, isComplete, url) => {
+    setIsLoading(true);
+
     push(databaseRef(db, `${DATABASE_NAME}/`), {
       title,
       description,
@@ -69,7 +79,9 @@ function App() {
     getTodos();
   };
 
-  const removeTodo = (id, url) => {
+  const removeTodo = ({ id, url }) => {
+    setIsLoading(true);
+
     const promises = [
       remove(databaseRef(db, `${DATABASE_NAME}/` + id)),
       deleteObject(storageRef(storage, url)),
@@ -84,7 +96,26 @@ function App() {
       });
   };
 
+  const updateTodo = ({ id, title, description, date, fileName, isComplete, url }) => {
+    const todoData = {
+      title,
+      description,
+      date,
+      fileName,
+      isComplete,
+      url,
+    };
+
+    setIsLoading(true);
+
+    update(databaseRef(db), {
+      [`${DATABASE_NAME}/${id}`]: todoData,
+    });
+    getTodos();
+  };
+
   const uploadFile = (name, file) => {
+    setIsLoading(true);
     const fileRef = storageRef(storage, name);
 
     return uploadBytes(fileRef, file);
@@ -117,9 +148,15 @@ function App() {
       <div className='wrapper'>
         <h1 className='header'>Список дел</h1>
         <Form addTodo={addTodo} uploadFile={uploadFile} />
-        {isLoading && <div>Загрузка...</div>}
+        {isLoading && <div className='loader'>Загрузка...</div>}
         {error && <div>Ошибка получения данных: {error}</div>}
-        <Todos todos={todos} error={error} removeTodo={removeTodo} downloadFile={downloadFile} />
+        <Todos
+          todos={todos}
+          error={error}
+          removeTodo={removeTodo}
+          downloadFile={downloadFile}
+          updateTodo={updateTodo}
+        />
       </div>
     </div>
   );

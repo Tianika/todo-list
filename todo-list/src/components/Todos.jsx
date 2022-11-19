@@ -1,6 +1,6 @@
 import Todo from './Todo';
 
-const Todos = ({ todos, removeTodo, downloadFile }) => {
+const Todos = ({ todos, removeTodo, downloadFile, updateTodo }) => {
   if (!todos) {
     return <div>Здесь пока ничего нет.</div>;
   }
@@ -9,17 +9,21 @@ const Todos = ({ todos, removeTodo, downloadFile }) => {
     <div>
       {todos &&
         Object.keys(todos).map((id) => {
-          const { title, description, date, fileName, url } = todos[id];
+          const { title, description, date, fileName, isComplete, url } = todos[id];
 
           return (
             <Todo
               key={id}
+              id={id}
               title={title}
               description={description}
               date={date}
               fileName={fileName}
-              removeTodo={() => removeTodo(id, url)}
-              downloadFile={() => downloadFile(url)}
+              isComplete={isComplete}
+              url={url}
+              removeTodo={removeTodo}
+              downloadFile={downloadFile}
+              updateTodo={updateTodo}
             />
           );
         })}
