@@ -181,11 +181,13 @@ const App = () => {
   const downloadFile = (name) => {
     getDownloadURL(storageRef(storage, name))
       .then((url) => {
-        console.log(url);
+        let link_url = document.createElement('a');
 
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', url);
-        xhr.send();
+        link_url.download = url.substring(url.lastIndexOf('/') + 1, url.length);
+        link_url.href = url;
+        document.body.appendChild(link_url);
+        link_url.click();
+        document.body.removeChild(link_url);
       })
       .catch((error) => {
         setError(error);
